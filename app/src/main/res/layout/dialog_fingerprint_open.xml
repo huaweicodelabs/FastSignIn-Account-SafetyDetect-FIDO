@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dimen_20"
+        android:paddingTop="@dimen/dimen_20"
+        android:paddingBottom="@dimen/dimen_20"
+        android:text="@string/fingerprint_auth"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_22"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dimen_20"
+        android:paddingEnd="@dimen/dimen_20"
+        android:paddingBottom="@dimen/dimen_20"
+        android:text="@string/fingerprint_open"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_18"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/fingerprint_open_cancel"
+            style="@style/btn_amber"
+            android:layout_height="@dimen/dimen_35"
+            android:layout_margin="@dimen/dimen_20"
+            android:layout_weight="1"
+            android:text="@string/cancel"
+            android:textSize="@dimen/text_16"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/fingerprint_open_confirm"
+            style="@style/btn_normal"
+            android:layout_height="@dimen/dimen_35"
+            android:layout_margin="@dimen/dimen_20"
+            android:layout_weight="1"
+            android:background="@drawable/btn_normal"
+            android:text="@string/confirm"
+            android:textSize="@dimen/text_16"
+            tools:ignore="MissingConstraints" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

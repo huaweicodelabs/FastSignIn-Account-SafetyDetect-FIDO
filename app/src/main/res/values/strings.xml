@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:idp="http://www.huawei.com/namespace/idp" lang="en-us">
+    <string name="app_name">HUAWEI Codelabs</string>
+    <string name="home">Home</string>
+    <string name="java_code">Java Code</string>
+    <string name="kotlin_code">Kotlin Code</string>
+
+    <string name="login">Sign-in</string>
+
+    <string name="exit">Sign-out</string>
+    <string name="fingerprint">Fingerprint sign-in</string>
+    <string name="fingerprint_auth">Fingerprint authentication</string>
+    <string name="fingerprint_open">Are you sure you want to enable the fingerprint sign-in function?</string>
+    <string name="fingerprint_close">Are you sure you want to disable the fingerprint sign-in function?</string>
+
+    <string name="avatar">Profile picture</string>
+    <string name="display_name">Nickname</string>
+    <string name="opneid">OpenID</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="confirm">OK</string>
+
+</resources>

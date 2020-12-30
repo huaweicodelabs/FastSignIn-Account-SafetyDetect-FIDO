@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/home_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="@string/home"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_18"
+        tools:ignore="MissingConstraints" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10"
+            android:layout_weight="1"
+            android:text="@string/avatar"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/home_avatar" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/home_avatar"
+            android:layout_width="@dimen/dimen_80"
+            android:layout_height="@dimen/dimen_80"
+            android:layout_margin="@dimen/dimen_10"
+            android:contentDescription="@null"
+            android:scaleType="fitXY" />
+
+    </LinearLayout>
+
+    <View style="@style/empty_view" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_45"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dimen_10"
+            android:gravity="center"
+            android:text="@string/display_name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_16" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_displayName"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/dimen_10"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/text_16"
+            tools:ignore="RtlHardcoded" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View style="@style/empty_view" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_30"
+        android:layout_marginStart="@dimen/dimen_10"
+        android:gravity="center"
+        android:text="@string/opneid"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_16" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/hone_openid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_10"
+        android:layout_marginEnd="@dimen/dimen_10"
+        android:layout_marginBottom="@dimen/dimen_10"
+        android:padding="@dimen/dimen_5"
+        android:background="@drawable/bg_box"
+        android:gravity="top|left"
+        android:minHeight="@dimen/dimen_45"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/text_16"
+        tools:ignore="RtlHardcoded" />
+
+    <View style="@style/empty_view" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/home_fingerprint_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_45"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dimen_10"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/fingerprint"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_16" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/home_fingerprint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimen_10"
+            android:checked="false"
+            android:thumb="@drawable/switch_circle_bg"
+            app:track="@drawable/switch_bg" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View style="@style/line" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/home_exit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_45"
+        android:layout_marginStart="@dimen/dimen_10"
+        android:drawableEnd="@mipmap/ic_more"
+        android:drawablePadding="@dimen/dimen_10"
+        android:gravity="center_vertical"
+        android:text="@string/exit"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_16" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

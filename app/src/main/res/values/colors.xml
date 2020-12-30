@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">@color/Blue_A400</color>
+    <color name="colorPrimaryDark">@color/Blue_A700</color>
+    <!-- edit text -->
+    <color name="colorAccent">@color/colorPrimary</color>
+    <color name="colorControlNormal">@color/colorPrimary</color>
+    <color name="colorControlActivated">@color/colorPrimary</color>
+    <color name="colorSwitchThumbNormal">@color/colorPrimary</color>
+    <color name="textColorPrimary">@color/colorPrimary</color>
+    <color name="windowBackground">#EBEBEB</color>
+    <!-- Secondary brand color. -->
+    <color name="colorSecondary">@color/Teal_200</color>
+    <color name="colorSecondaryVariant">@color/Teal_700</color>
+    <color name="colorOnSecondary">@color/black</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="Blue_A400">#2979ff</color>
+    <color name="Blue_A700">#2962ff</color>
+    <color name="Teal_200">#FF03DAC5</color>
+    <color name="Teal_700">#FF018786</color>
+    <color name="Grey_300">#e0e0e0</color>
+    <color name="Grey_500">#9e9e9e</color>
+    <color name="Green_A400">#00e676</color>
+    <color name="Amber_700">#ffa000</color>
+    <color name="Amber_900">#ff6f00</color>
+
+</resources>
