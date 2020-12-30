@@ -40,6 +40,11 @@ import com.huawei.hmf.tasks.OnFailureListener;
 import com.huawei.hmf.tasks.OnSuccessListener;
 import com.huawei.hmf.tasks.Task;
 import com.huawei.hms.common.ApiException;
+import com.huawei.hms.support.account.AccountAuthManager;
+import com.huawei.hms.support.account.request.AccountAuthParams;
+import com.huawei.hms.support.account.request.AccountAuthParamsHelper;
+import com.huawei.hms.support.account.result.AuthAccount;
+import com.huawei.hms.support.account.service.AccountAuthService;
 import com.huawei.hms.support.api.entity.safetydetect.UserDetectResponse;
 import com.huawei.hms.support.api.fido.bioauthn.BioAuthnCallback;
 import com.huawei.hms.support.api.fido.bioauthn.BioAuthnPrompt;
@@ -125,7 +130,7 @@ public class LoginAct extends AppCompatActivity {
      */
     private void onFingerprintStatusCheck() {
         boolean isOpenFingerprint = (boolean) SPUtil.get(this, SPConstants.FINGER_PRINT_LOGIN_SWITCH, false);
-        mTvFingerprint.setVisibility(isOpenFingerprint ? View.VISIBLE : View.VISIBLE);
+        mTvFingerprint.setVisibility(isOpenFingerprint ? View.VISIBLE : View.GONE);
         if (isOpenFingerprint) {
             onSafetyCheck(2);
         }
@@ -168,48 +173,28 @@ public class LoginAct extends AppCompatActivity {
     }
 
     /**
-     * Huawei Account Login in
+     * HUAWEI Account Login in
      */
     private void onHuaweiAccountLogin() {
-        HuaweiIdAuthParams authParams = new HuaweiIdAuthParamsHelper(HuaweiIdAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
+        AccountAuthParams authParams = new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
                 .setIdToken().createParams();
-        HuaweiIdAuthService mAuthService = HuaweiIdAuthManager.getService(this, authParams);
-        // silent SignIn
-        Task<AuthHuaweiId> task = mAuthService.silentSignIn();
-        task.addOnSuccessListener(new OnSuccessListener<AuthHuaweiId>() {
-            @Override
-            public void onSuccess(AuthHuaweiId authHuaweiId) {
-                onHuaweiIdLoginSuccess(authHuaweiId);
-                Log.i(TAG, "silent signIn success");
-            }
-        });
-        task.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                if (e instanceof ApiException) {
-                    ApiException apiException = (ApiException) e;
-                    Log.e(TAG, "silent signIn error : " + apiException.getMessage());
-                    if (apiException.getStatusCode() == 2002) {
-                        startActivityForResult(mAuthService.getSignInIntent(), REQUEST_CODE);
-                    }
-                }
-            }
-        });
+        AccountAuthService mAuthService = AccountAuthManager.getService(this, authParams);
+        startActivityForResult(mAuthService.getSignInIntent(), REQUEST_CODE);
     }
 
     /**
-     * Login success
+     * HUAWEI Account Login success
      */
-    private void onHuaweiIdLoginSuccess(AuthHuaweiId authHuaweiId) {
-        String openId = authHuaweiId.getOpenId();
+    private void onHuaweiIdLoginSuccess(AuthAccount authAccount) {
+        String openId = authAccount.getOpenId();
         Log.i(TAG, "OpenId : " + openId);
         SPUtil.put(this, SPConstants.KEY_OPENID, openId);
         // save user info
         UserBean userBean = UserUtil.getLocalUser(this, openId);
         if (userBean == null) {
             userBean = new UserBean();
-            userBean.setAvatar(authHuaweiId.getAvatarUriString());
-            userBean.setDisplayName(authHuaweiId.getDisplayName());
+            userBean.setAvatar(authAccount.getAvatarUriString());
+            userBean.setDisplayName(authAccount.getDisplayName());
             String localStr = new Gson().toJson(userBean);
             SPUtil.put(this, openId, localStr);
         }
@@ -252,13 +237,13 @@ public class LoginAct extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE) {
-            Task<AuthHuaweiId> authHuaweiIdTask = HuaweiIdAuthManager.parseAuthResultFromIntent(data);
-            if (authHuaweiIdTask.isSuccessful()) {
+            Task<AuthAccount> authAccountTask = AccountAuthManager.parseAuthResultFromIntent(data);
+            if (authAccountTask.isSuccessful()) {
                 //login success
-                AuthHuaweiId huaweiAccount = authHuaweiIdTask.getResult();
-                onHuaweiIdLoginSuccess(huaweiAccount);
+                AuthAccount authAccount = authAccountTask.getResult();
+                onHuaweiIdLoginSuccess(authAccount);
             } else {
-                Log.e(TAG, "sign in failed : " + ((ApiException) authHuaweiIdTask.getException()).getStatusCode());
+                Log.e(TAG, "sign in failed : " + ((ApiException) authAccountTask.getException()).getStatusCode());
             }
         }
     }

@@ -32,17 +32,19 @@ import com.codelabs.accountsafetyfido.kotlin.util.fingerprint.KeyHelper.Companio
 import com.google.gson.Gson
 import com.huawei.agconnect.config.AGConnectServicesConfig
 import com.huawei.hms.common.ApiException
+import com.huawei.hms.support.account.AccountAuthManager
+import com.huawei.hms.support.account.request.AccountAuthParams
+import com.huawei.hms.support.account.request.AccountAuthParamsHelper
+import com.huawei.hms.support.account.result.AuthAccount
+import com.huawei.hms.support.account.service.AccountAuthService
 import com.huawei.hms.support.api.fido.bioauthn.BioAuthnCallback
 import com.huawei.hms.support.api.fido.bioauthn.BioAuthnPrompt
 import com.huawei.hms.support.api.fido.bioauthn.BioAuthnResult
 import com.huawei.hms.support.api.fido.bioauthn.CryptoObject
 import com.huawei.hms.support.api.safetydetect.SafetyDetect
-import com.huawei.hms.support.hwid.HuaweiIdAuthManager
-import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams
-import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper
-import com.huawei.hms.support.hwid.result.AuthHuaweiId
 import kotlinx.android.synthetic.main.login_act.*
 import java.util.*
+
 
 /**
  * Created by CodeLab
@@ -120,40 +122,26 @@ class LoginAct : AppCompatActivity() {
     }
 
     /**
-     * Huawei Account Login in
+     * HUAWEI Account Login in
      */
     private fun onHuaweiAccountLogin() {
-        val authParams = HuaweiIdAuthParamsHelper(HuaweiIdAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
+        val authParams: AccountAuthParams = AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
             .setIdToken().createParams()
-        val mAuthService = HuaweiIdAuthManager.getService(this, authParams)
-
-        // silent SignIn
-        val task = mAuthService.silentSignIn()
-        task.addOnSuccessListener { authHuaweiId: AuthHuaweiId ->
-            onHuaweiIdLoginSuccess(authHuaweiId)
-            Log.i(TAG, "silent signIn success")
-        }
-        task.addOnFailureListener { e: Exception? ->
-            if (e is ApiException) {
-                Log.e(TAG, "silent signIn error : " + e.message)
-                if (e.statusCode == 2002) {
-                    startActivityForResult(mAuthService.signInIntent, REQUEST_CODE)
-                }
-            }
-        }
+        val mAuthService: AccountAuthService = AccountAuthManager.getService(this, authParams)
+        startActivityForResult(mAuthService.signInIntent, REQUEST_CODE)
     }
 
     /**
-     * Login success
+     * HUAWEI Account Login success
      */
-    private fun onHuaweiIdLoginSuccess(authHuaweiId: AuthHuaweiId) {
-        val openId = authHuaweiId.openId
+    private fun onHuaweiIdLoginSuccess(authAccount: AuthAccount) {
+        val openId = authAccount.openId
         Log.i(TAG, "OpenId : $openId")
         // is login
         SPUtil.put(this, SPConstants.KEY_OPENID, openId)
         var userBean: UserBean? = UserUtil.getLocalUser(this, openId)
         if (userBean == null) {
-            userBean = UserBean(authHuaweiId.displayName, authHuaweiId.avatarUriString)
+            userBean = UserBean(authAccount.displayName, authAccount.avatarUriString)
             val localStr = Gson().toJson(userBean)
             SPUtil.put(this, openId, localStr)
         }
@@ -194,13 +182,13 @@ class LoginAct : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE) {
-            val authHuaweiIdTask = HuaweiIdAuthManager.parseAuthResultFromIntent(data)
-            if (authHuaweiIdTask.isSuccessful) {
+            val authAccountTask = AccountAuthManager.parseAuthResultFromIntent(data)
+            if (authAccountTask.isSuccessful) {
                 //login success
-                val huaweiAccount = authHuaweiIdTask.result
-                onHuaweiIdLoginSuccess(huaweiAccount)
+                val authAccount = authAccountTask.result
+                onHuaweiIdLoginSuccess(authAccount)
             } else {
-                Log.e(TAG, "sign in failed : " + (authHuaweiIdTask.exception as ApiException).statusCode)
+                Log.e(TAG, "sign in failed : " + (authAccountTask.exception as ApiException).statusCode)
             }
         }
     }
@@ -208,7 +196,6 @@ class LoginAct : AppCompatActivity() {
     // call back
     private var loginCallback: BioAuthnCallback = object : BioAuthnCallback() {
         override fun onAuthError(errMsgId: Int, errString: CharSequence) {
-            // TODO Login Auth Error
             Log.e("loginCallback", "login auth error : $errString")
         }
 
@@ -236,7 +223,6 @@ class LoginAct : AppCompatActivity() {
         }
 
         override fun onAuthFailed() {
-            // TODO Auth Failed
             Log.e("loginCallback", "auth failed")
         }
     }
